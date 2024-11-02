@@ -16,12 +16,17 @@ fetch('/assets/json/games.json')
                 var ute = game.url;
                 if (localStorage.getItem("proxy") == "uv") {
                     ute = __uv$config.prefix + __uv$config.encodeUrl(ute);
+                    localStorage.setItem('url', ute);
+                    window.location.href = '/browser.html';
                 }
                 else if (localStorage.getItem("proxy") == "rammerhead") {
                     rhEncode();
                 }
-                localStorage.setItem('url', ute);
-                window.location.href = '/browser.html';
+
+                async function rhEncode() {
+                    ute = await RammerheadEncode(ute);
+                    window.location.href = "/" + ute;
+                }
             });
 
             appsContainer.appendChild(gameElement);
@@ -29,6 +34,3 @@ fetch('/assets/json/games.json')
     });
 
 
-async function rhEncode() {
-    ute = await RammerheadEncode(ute);
-}

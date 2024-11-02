@@ -49,16 +49,19 @@ if (form && input) {
 
         if (localStorage.getItem("proxy") == "uv") {
             url = __uv$config.prefix + __uv$config.encodeUrl(url);
+            localStorage.setItem("url", url);
+            window.location.href = "/browser.html";
         }
         else if (localStorage.getItem("proxy") == "rammerhead") {
             rhEncode();
-        }
-        localStorage.setItem("url", url);
 
-        window.location.href = "/browser.html";
+        }
+        async function rhEncode() {
+            url = await RammerheadEncode(url);
+            window.location.href = "/" + url;
+        }
+
     });
 
-    async function rhEncode() {
-        url = await RammerheadEncode(url);
-    }
 }
+
