@@ -13,7 +13,13 @@ fetch('/assets/json/games.json')
       `;
 
             gameElement.addEventListener('click', async () => {
-                var ute = __uv$config.prefix + __uv$config.encodeUrl(game.url)
+                var ute = game.url;
+                if (localStorage.getItem("proxy") == "uv") {
+                    ute = __uv$config.prefix + __uv$config.encodeUrl(ute);
+                }
+                else if (localStorage.getItem("proxy") == "rammerhead") {
+                    rhEncode();
+                }
                 localStorage.setItem('url', ute);
                 window.location.href = '/browser.html';
             });
@@ -21,3 +27,8 @@ fetch('/assets/json/games.json')
             appsContainer.appendChild(gameElement);
         });
     });
+
+
+async function rhEncode() {
+    ute = await RammerheadEncode(ute);
+}

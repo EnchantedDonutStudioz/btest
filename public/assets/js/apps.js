@@ -13,7 +13,13 @@ fetch('/assets/json/apps.json')
       `;
 
             appElement.addEventListener('click', async () => {
-                var ute = __uv$config.prefix + __uv$config.encodeUrl(app.url)
+                var ute = app.url;
+                if (localStorage.getItem("proxy") == "uv") {
+                    ute = __uv$config.prefix + __uv$config.encodeUrl(ute);
+                }
+                else if (localStorage.getItem("proxy") == "rammerhead") {
+                    rhEncode();
+                }
                 localStorage.setItem('url', ute);
                 window.location.href = '/browser.html';
             });
@@ -21,3 +27,7 @@ fetch('/assets/json/apps.json')
             appsContainer.appendChild(appElement);
         });
     });
+
+async function rhEncode() {
+    ute = await RammerheadEncode(ute);
+}
