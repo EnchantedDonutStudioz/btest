@@ -6,6 +6,7 @@ import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
 import { join } from "node:path";
 import { hostname } from "node:os";
 import wisp from "wisp-server-node"
+import rammerhead from '@rubynetwork/rammerhead';
 import { createRammerhead, shouldRouteRh, routeRhUpgrade, routeRhRequest } from '@rubynetwork/rammerhead';
 
 
@@ -44,11 +45,12 @@ server.on("request", (req, res) => {
 });
 
 server.on("upgrade", (req, socket, head) => {
-    if (req.url.endsWith("/wisp/"))
+    if (req.url.endsWith("/wisp/")) {
         wisp.routeRequest(req, socket, head);
-    else
+    }
+    else {
         socket.end();
-
+    }
     if (rammerhead.shouldRouteRh(req)) {
         rammerhead.routeRhUpgrade(rh /* from the createRammerhead funtion MUST be passed */, req, socket, head)
     }
